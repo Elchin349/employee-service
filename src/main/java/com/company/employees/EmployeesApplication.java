@@ -10,21 +10,4 @@ public class EmployeesApplication {
         SpringApplication.run(EmployeesApplication.class, args);
     }
 
-    /**
-     *    Address table
-     *    country
-     *    city
-     *    district
-     *    street
-     *    one to one
-     *
-     *
-     *
-     *    EmployeeDetails
-     *    startDate
-     *    endDate
-     *    salary
-     *    departmentId
-     *
-     */
 }

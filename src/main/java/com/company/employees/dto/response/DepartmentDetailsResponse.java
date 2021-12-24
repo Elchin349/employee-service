@@ -3,11 +3,12 @@ package com.company.employees.dto.response;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class DepartmentResponse {
+public class DepartmentDetailsResponse {
 
     private Long id;
     private String departmentName;
     private LocalDateTime createdAt;
+    private List<EmployeeResponse> employeeResponseList;
 
     public Long getId() {
         return id;
@@ -33,4 +34,11 @@ public class DepartmentResponse {
         this.createdAt = createdAt;
     }
 
+    public List<EmployeeResponse> getEmployeeResponseList() {
+        return employeeResponseList;
+    }
+
+    public void setEmployeeResponseList(List<EmployeeResponse> employeeResponseList) {
+        this.employeeResponseList = employeeResponseList;
+    }
 }

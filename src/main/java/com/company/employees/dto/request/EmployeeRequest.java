@@ -1,5 +1,6 @@
 package com.company.employees.dto.request;
 
+import com.company.employees.entity.Employee;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -18,6 +19,7 @@ public class EmployeeRequest {
     private String address;
     private String email;
     private String phone;
+    private Long departmentId;
 
     public String getFirstName() {
         return firstName;
@@ -65,5 +67,13 @@ public class EmployeeRequest {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Long getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
     }
 }

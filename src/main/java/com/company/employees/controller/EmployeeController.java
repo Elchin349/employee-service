@@ -3,11 +3,8 @@ package com.company.employees.controller;
 import com.company.employees.dto.request.EmployeeRequest;
 import com.company.employees.dto.response.EmployeeResponse;
 import com.company.employees.service.EmployeeService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 @RestController
@@ -48,4 +45,6 @@ public class EmployeeController {
     public void delete(@PathVariable Long id) {
         employeeService.deleteById(id);
     }
+
+
 }

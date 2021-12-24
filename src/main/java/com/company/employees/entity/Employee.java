@@ -1,8 +1,6 @@
 package com.company.employees.entity;
 
-import com.company.employees.dto.request.EmployeeRequest;
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,7 +26,6 @@ public class Employee {
     private String email;
     @Column(name = "phone")
     private String phone;
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

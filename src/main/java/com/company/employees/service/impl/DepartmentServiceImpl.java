@@ -1,10 +1,13 @@
 package com.company.employees.service.impl;
 
 import com.company.employees.dto.request.DepartmentRequest;
+import com.company.employees.dto.response.DepartmentDetailsResponse;
 import com.company.employees.dto.response.DepartmentResponse;
 import com.company.employees.entity.Department;
+import com.company.employees.entity.Employee;
 import com.company.employees.mapper.DepartmentMapper;
 import com.company.employees.repository.DepartmentRepository;
+import com.company.employees.repository.EmployeeRepository;
 import com.company.employees.service.DepartmentService;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +20,11 @@ import java.util.stream.Collectors;
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository departmentRepository;
+    private final EmployeeRepository employeeRepository;
 
-    public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
+    public DepartmentServiceImpl(DepartmentRepository departmentRepository, EmployeeRepository employeeRepository) {
         this.departmentRepository = departmentRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
@@ -60,5 +65,13 @@ public class DepartmentServiceImpl implements DepartmentService {
             return DepartmentMapper.toResponse(departmentRepository.save(department1));
         }
         return null;
+    }
+
+    @Override
+    public DepartmentDetailsResponse getDepartmentGroupByEmployee(Long id) {
+        Department department = departmentRepository.findById(id).get();
+        List<Employee> employees = employeeRepository.findAllByDepartmentId(id);
+        department.setEmployeeList(employees);
+        return DepartmentMapper.toResponseDetails(department);
     }
 }
