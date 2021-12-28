@@ -16,7 +16,7 @@ public class Department {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "department",cascade = CascadeType.ALL)
     private List<Employee> employeeList;
 
     public Long getId() {

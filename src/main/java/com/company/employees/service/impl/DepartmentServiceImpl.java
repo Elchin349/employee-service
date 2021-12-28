@@ -11,6 +11,8 @@ import com.company.employees.repository.EmployeeRepository;
 import com.company.employees.service.DepartmentService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -68,10 +70,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    @Transactional
     public DepartmentDetailsResponse getDepartmentGroupByEmployee(Long id) {
         Department department = departmentRepository.findById(id).get();
-        List<Employee> employees = employeeRepository.findAllByDepartmentId(id);
-        department.setEmployeeList(employees);
         return DepartmentMapper.toResponseDetails(department);
     }
 }
