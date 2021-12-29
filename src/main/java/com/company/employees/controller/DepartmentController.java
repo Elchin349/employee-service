@@ -6,6 +6,7 @@ import com.company.employees.dto.response.DepartmentResponse;
 import com.company.employees.service.DepartmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -31,6 +32,12 @@ public class DepartmentController {
     @GetMapping("/details/{id}")
     public ResponseEntity<DepartmentDetailsResponse> getDetailsById(@PathVariable Long id) {
         return ResponseEntity.ok(departmentService.getDepartmentGroupByEmployee(id));
+    }
+
+    @GetMapping("/details")
+    public ResponseEntity<List<DepartmentDetailsResponse>> getDetails() {
+        List<DepartmentDetailsResponse> departmentDetailsResponses = departmentService.getAllDepartmentGroupByEmployee();
+        return ResponseEntity.ok(departmentDetailsResponses);
     }
 
     @PostMapping

@@ -17,4 +17,6 @@ public interface DepartmentService {
     DepartmentResponse update(Long id, DepartmentRequest request);
 
     DepartmentDetailsResponse getDepartmentGroupByEmployee(Long id);
+
+    List<DepartmentDetailsResponse> getAllDepartmentGroupByEmployee();
 }

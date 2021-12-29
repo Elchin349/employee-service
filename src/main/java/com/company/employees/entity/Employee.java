@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Table(name = "employees")
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class Employee {
 
     @Id
@@ -20,8 +21,6 @@ public class Employee {
     private String lastName;
     @Column(name = "birth_date")
     private LocalDate birthDate;
-    @Column(name = "address")
-    private String address;
     @Column(name = "email")
     private String email;
     @Column(name = "phone")
@@ -33,77 +32,9 @@ public class Employee {
     @JoinColumn(name = "department_id")
     private Department department;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     @PrePersist
     public void init(){

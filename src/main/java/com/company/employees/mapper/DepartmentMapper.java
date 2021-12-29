@@ -45,7 +45,6 @@ public class DepartmentMapper {
         response.setId(employee.getId());
         response.setFirstName(employee.getFirstName());
         response.setLastName(employee.getLastName());
-        response.setAddress(employee.getAddress());
         response.setBirthDate(employee.getBirthDate());
         response.setEmail(employee.getEmail());
         response.setPhone(employee.getPhone());

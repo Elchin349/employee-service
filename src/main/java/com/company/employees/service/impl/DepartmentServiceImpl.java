@@ -37,22 +37,22 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public DepartmentResponse findById(Long id) {
         Optional<Department> department = departmentRepository.findById(id);
-//        if(department.isPresent()) {
-//            return DepartmentMapper.toResponse(department.get());
-//        }
-//        return null;
         return department.map(DepartmentMapper::toResponse).orElse(null);
     }
 
+//    @PostConstruct
+//    public void test() {
+//        List<Department> departments = departmentRepository.findAllDepartment();
+//        System.out.println(departments);
+//        Department department = departmentRepository.findDepartmentById(1L);
+//        System.out.println(department);
+//        List<Department> departmentList = departmentRepository.findAll();
+//        System.out.println(departmentList);
+//    }
+
     @Override
     public List<DepartmentResponse> findAll() {
-        List<DepartmentResponse> departmentResponses = new ArrayList<>();
         List<Department> departments = departmentRepository.findAll();
-//        for(Department d : departments) {
-//            departmentResponses.add(DepartmentMapper.toResponse(d));
-//        }
-//        return departmentResponses;
-//        return departments.stream().map(department -> DepartmentMapper.toResponse(department)).collect(Collectors.toList());
         return departments.stream()
                 .map(DepartmentMapper::toResponse)
                 .collect(Collectors.toList());
@@ -73,6 +73,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Transactional
     public DepartmentDetailsResponse getDepartmentGroupByEmployee(Long id) {
         Department department = departmentRepository.findById(id).get();
+//        Department department = departmentRepository.findDepartmentAndEmployeeById(id).stream().findFirst().get();
         return DepartmentMapper.toResponseDetails(department);
+    }
+
+    @Override
+    public List<DepartmentDetailsResponse> getAllDepartmentGroupByEmployee() {
+      return null;
     }
 }
