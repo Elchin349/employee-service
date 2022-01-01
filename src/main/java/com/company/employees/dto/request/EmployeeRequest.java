@@ -16,4 +16,5 @@ public class EmployeeRequest {
     private String email;
     private String phone;
     private Long departmentId;
+    private AddressRequest address;
 }

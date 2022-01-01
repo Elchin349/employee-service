@@ -40,16 +40,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         return department.map(DepartmentMapper::toResponse).orElse(null);
     }
 
-//    @PostConstruct
-//    public void test() {
-//        List<Department> departments = departmentRepository.findAllDepartment();
-//        System.out.println(departments);
-//        Department department = departmentRepository.findDepartmentById(1L);
-//        System.out.println(department);
-//        List<Department> departmentList = departmentRepository.findAll();
-//        System.out.println(departmentList);
-//    }
-
     @Override
     public List<DepartmentResponse> findAll() {
         List<Department> departments = departmentRepository.findAll();
@@ -70,10 +60,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    @Transactional
     public DepartmentDetailsResponse getDepartmentGroupByEmployee(Long id) {
         Department department = departmentRepository.findById(id).get();
-//        Department department = departmentRepository.findDepartmentAndEmployeeById(id).stream().findFirst().get();
         return DepartmentMapper.toResponseDetails(department);
     }
 

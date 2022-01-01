@@ -18,19 +18,23 @@ public class AddressController {
     private final AddressService addressService;
 
     @PostMapping
-    public ResponseEntity<AddressResponse> create(@RequestBody AddressRequest request){
+    public ResponseEntity<AddressResponse> create(@RequestBody AddressRequest request) {
         return ResponseEntity.ok(addressService.create(request));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AddressResponse> getById(@PathVariable Long id){
+    public ResponseEntity<AddressResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(addressService.getById(id));
     }
 
     @GetMapping()
-    public ResponseEntity<List<AddressResponse>> getAll(){
+    public ResponseEntity<List<AddressResponse>> getAll() {
         return ResponseEntity.ok(addressService.getAll());
     }
 
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        addressService.delete(id);
+    }
 
 }

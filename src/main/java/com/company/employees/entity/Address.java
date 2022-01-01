@@ -25,7 +25,7 @@ public class Address {
     @Column(name = "city")
     public String city;
 
-    @OneToOne
+    @OneToOne()
     @JoinColumn(name = "employee_id")
     public Employee employee;
 }

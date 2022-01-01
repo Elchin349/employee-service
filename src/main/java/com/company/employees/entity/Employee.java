@@ -1,6 +1,7 @@
 package com.company.employees.entity;
 
 import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,12 +33,11 @@ public class Employee {
     @JoinColumn(name = "department_id")
     private Department department;
 
-    @OneToOne
-    @JoinColumn(name = "address_id")
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
     private Address address;
 
     @PrePersist
-    public void init(){
+    public void init() {
         createdAt = LocalDateTime.now();
     }
 }

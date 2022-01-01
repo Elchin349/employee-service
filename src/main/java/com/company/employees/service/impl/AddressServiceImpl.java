@@ -47,8 +47,13 @@ public class AddressServiceImpl implements AddressService {
         if (addressRepository.findById(id).isPresent()) {
             Address address = addressMapper.toEntity(request);
             address.setId(id);
-           return addressMapper.toResponse(addressRepository.save(address));
+            return addressMapper.toResponse(addressRepository.save(address));
         }
         return null;
+    }
+
+    @Override
+    public void delete(Long id) {
+        addressRepository.deleteById(id);
     }
 }
