@@ -33,8 +33,12 @@ public class Employee {
     @JoinColumn(name = "department_id")
     private Department department;
 
+
     @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
     private Address address;
+
+//    @OneToOne(cascade = CascadeType.ALL)
+//    private Address address;
 
     @PrePersist
     public void init() {

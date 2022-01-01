@@ -25,7 +25,11 @@ public class Address {
     @Column(name = "city")
     public String city;
 
+
     @OneToOne()
     @JoinColumn(name = "employee_id")
     public Employee employee;
+
+//    @OneToOne(mappedBy = "address")
+//    public Employee employee;
 }

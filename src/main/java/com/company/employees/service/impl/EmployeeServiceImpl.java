@@ -27,7 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponse createEmployee(EmployeeRequest request) {
         Employee employee = employeeMapper.toEmployee(request);
-        employee.setDepartment(departmentRepository.findById(request.getDepartmentId()).get());
+      //  employee.setDepartment(departmentRepository.findById(request.getDepartmentId()).get());
         employee = employeeRepository.save(employee);
         return employeeMapper.toResponse(employee);
     }
