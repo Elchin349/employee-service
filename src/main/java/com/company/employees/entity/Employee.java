@@ -34,11 +34,14 @@ public class Employee {
     private Department department;
 
 
-    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
+//    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
+//    private Address address;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    private Address address;
+    @OneToOne(cascade = CascadeType.ALL)
+    private JobDetail jobDetail;
 
     @PrePersist
     public void init() {

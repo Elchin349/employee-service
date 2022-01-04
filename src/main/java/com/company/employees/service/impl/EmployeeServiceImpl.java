@@ -2,7 +2,9 @@ package com.company.employees.service.impl;
 
 import com.company.employees.dto.request.EmployeeRequest;
 import com.company.employees.dto.response.EmployeeResponse;
+import com.company.employees.entity.Department;
 import com.company.employees.entity.Employee;
+import com.company.employees.entity.SumSalary;
 import com.company.employees.mapper.EmployeeMapper;
 import com.company.employees.repository.DepartmentRepository;
 import com.company.employees.repository.EmployeeRepository;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,9 +30,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponse createEmployee(EmployeeRequest request) {
         Employee employee = employeeMapper.toEmployee(request);
-      //  employee.setDepartment(departmentRepository.findById(request.getDepartmentId()).get());
-        employee = employeeRepository.save(employee);
-        return employeeMapper.toResponse(employee);
+        Optional<Department> department = departmentRepository.findById(request.getDepartmentId());
+        if (department.isPresent()) {
+            employee.setDepartment(department.get());
+            employee = employeeRepository.save(employee);
+            return employeeMapper.toResponse(employee);
+        }
+        throw new NullPointerException("Department id yoxdu");
     }
 
     @Override

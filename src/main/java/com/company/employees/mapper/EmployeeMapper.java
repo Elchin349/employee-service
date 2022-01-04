@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 public class EmployeeMapper {
 
     private final AddressMapper addressMapper;
+    private final JobDetailMapper jobDetailMapper;
 
     public Employee toEmployee(EmployeeRequest request) {
         Employee employee = new Employee();
@@ -19,8 +20,9 @@ public class EmployeeMapper {
         employee.setEmail(request.getEmail());
         employee.setPhone(request.getPhone());
         employee.setBirthDate(request.getBirthDate());
-        employee.setAddress(addressMapper.toEntity(request.getAddress(),employee));
-        //employee.setAddress(addressMapper.toEntity(request.getAddress()));
+        //employee.setAddress(addressMapper.toEntity(request.getAddress(),employee));
+        employee.setAddress(addressMapper.toEntity(request.getAddress()));
+        employee.setJobDetail(jobDetailMapper.toEntity(request.getJobDetail()));
         return employee;
     }
 
@@ -33,6 +35,7 @@ public class EmployeeMapper {
         response.setEmail(employee.getEmail());
         response.setPhone(employee.getPhone());
         response.setAddress(addressMapper.toResponse(employee.getAddress()));
+        response.setJobDetail(jobDetailMapper.toResponse(employee.getJobDetail()));
         return response;
     }
 }

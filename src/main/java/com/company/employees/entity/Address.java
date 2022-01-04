@@ -26,10 +26,10 @@ public class Address {
     public String city;
 
 
-    @OneToOne()
-    @JoinColumn(name = "employee_id")
-    public Employee employee;
-
-//    @OneToOne(mappedBy = "address")
+//    @OneToOne()
+//    @JoinColumn(name = "employee_id")
 //    public Employee employee;
+
+    @OneToOne(mappedBy = "address")
+    public Employee employee;
 }

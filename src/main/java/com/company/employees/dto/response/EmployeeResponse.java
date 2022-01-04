@@ -16,4 +16,5 @@ public class EmployeeResponse {
     private String email;
     private String phone;
     private AddressResponse address;
+    private JobDetailResponse jobDetail;
 }

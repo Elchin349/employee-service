@@ -17,4 +17,5 @@ public class EmployeeRequest {
     private String phone;
     private Long departmentId;
     private AddressRequest address;
+    private JobDetailRequest jobDetail;
 }
