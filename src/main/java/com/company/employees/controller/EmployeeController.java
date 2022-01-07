@@ -1,5 +1,8 @@
 package com.company.employees.controller;
 
+import com.company.employees.container.api.ApiBuilder;
+import com.company.employees.container.api.CollectionMessage;
+import com.company.employees.container.api.SingleMessage;
 import com.company.employees.dto.request.EmployeeRequest;
 import com.company.employees.dto.response.EmployeeResponse;
 import com.company.employees.service.EmployeeService;
@@ -9,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/employee")
-public class EmployeeController {
+public class EmployeeController implements ApiBuilder {
 
     private final EmployeeService employeeService;
 
@@ -24,15 +27,13 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EmployeeResponse> getById(@PathVariable Long id) {
-        EmployeeResponse response = employeeService.findById(id);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<SingleMessage<EmployeeResponse>> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(generateSingleMessage(employeeService.findById(id)));
     }
 
     @GetMapping
-    public ResponseEntity<List<EmployeeResponse>> getAll() {
-        List<EmployeeResponse> response = employeeService.findAll();
-        return ResponseEntity.ok(response);
+    public ResponseEntity<CollectionMessage<EmployeeResponse>> getAll() {
+        return ResponseEntity.ok(generateCollectionMessage(employeeService.findAll()));
     }
 
     @PutMapping("/{id}")

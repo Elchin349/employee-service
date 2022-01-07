@@ -5,6 +5,8 @@ import com.company.employees.dto.response.EmployeeResponse;
 import com.company.employees.entity.Department;
 import com.company.employees.entity.Employee;
 import com.company.employees.entity.SumSalary;
+import com.company.employees.exception.BusinessExceptionEnum;
+import com.company.employees.exception.NotFoundException;
 import com.company.employees.mapper.EmployeeMapper;
 import com.company.employees.repository.DepartmentRepository;
 import com.company.employees.repository.EmployeeRepository;
@@ -29,6 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse createEmployee(EmployeeRequest request) {
+
         Employee employee = employeeMapper.toEmployee(request);
         Optional<Department> department = departmentRepository.findById(request.getDepartmentId());
         if (department.isPresent()) {
@@ -36,7 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             employee = employeeRepository.save(employee);
             return employeeMapper.toResponse(employee);
         }
-        throw new NullPointerException("Department id yoxdu");
+        throw new NotFoundException(BusinessExceptionEnum.DEPARTMENT_BY_ID_NOT_FOUND, request.getDepartmentId());
     }
 
     @Override
@@ -45,7 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employee.isPresent()) {
             return employeeMapper.toResponse(employee.get());
         }
-        throw new RuntimeException("yoxdu");
+        throw new NotFoundException(BusinessExceptionEnum.EMPLOYEE_BY_ID_NOT_FOUND, id);
     }
 
     @Override
