@@ -1,5 +1,6 @@
 package com.company.employees.service.impl;
 
+import com.company.employees.dto.common.CommonResponse;
 import com.company.employees.dto.request.EmployeeRequest;
 import com.company.employees.dto.response.EmployeeResponse;
 import com.company.employees.entity.Department;
@@ -30,35 +31,44 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeMapper employeeMapper;
 
     @Override
-    public EmployeeResponse createEmployee(EmployeeRequest request) {
+    public CommonResponse createEmployee(EmployeeRequest request) {
 
+        CommonResponse commonResponse = new CommonResponse();
         Employee employee = employeeMapper.toEmployee(request);
         Optional<Department> department = departmentRepository.findById(request.getDepartmentId());
         if (department.isPresent()) {
             employee.setDepartment(department.get());
             employee = employeeRepository.save(employee);
-            return employeeMapper.toResponse(employee);
+            commonResponse.setItem(employeeMapper.toResponse(employee));
+            commonResponse.setStatus("Success");
+            return commonResponse;
         }
         throw new NotFoundException(BusinessExceptionEnum.DEPARTMENT_BY_ID_NOT_FOUND, request.getDepartmentId());
     }
 
     @Override
-    public EmployeeResponse findById(@PathVariable Long id) {
+    public CommonResponse findById(@PathVariable Long id) {
+        CommonResponse commonResponse = new CommonResponse();
         Optional<Employee> employee = employeeRepository.findById(id);
         if (employee.isPresent()) {
-            return employeeMapper.toResponse(employee.get());
+            commonResponse.setStatus("success");
+            commonResponse.setItem(employeeMapper.toResponse(employee.get()));
+            return commonResponse;
         }
         throw new NotFoundException(BusinessExceptionEnum.EMPLOYEE_BY_ID_NOT_FOUND, id);
     }
 
     @Override
-    public List<EmployeeResponse> findAll() {
+    public CommonResponse findAll() {
+        CommonResponse commonResponse = new CommonResponse();
         List<Employee> employeeList = employeeRepository.findAll();
         List<EmployeeResponse> responses = new ArrayList<>();
         for (Employee e : employeeList) {
             responses.add(employeeMapper.toResponse(e));
         }
-        return responses;
+        commonResponse.setStatus("success");
+        commonResponse.setItem(responses);
+        return commonResponse;
     }
 
     @Override
@@ -68,12 +78,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeResponse update(Long id, EmployeeRequest employeeRequest) {
+    public CommonResponse update(Long id, EmployeeRequest employeeRequest) {
+        CommonResponse commonResponse = new CommonResponse();
         Optional<Employee> employee = employeeRepository.findById(id);
         if (employee.isPresent()) {
             Employee employee1 = employeeMapper.toEmployee(employeeRequest);
             employee1.setId(id);
-            return employeeMapper.toResponse(employeeRepository.save(employee1));
+
+            commonResponse.setStatus("success");
+            commonResponse.setItem(employeeMapper.toResponse(employeeRepository.save(employee1)));
+            return commonResponse;
         }
         return null;
     }

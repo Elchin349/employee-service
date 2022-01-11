@@ -1,12 +1,12 @@
 package com.company.employees.exception;
 
-public class NotFoundException extends RuntimeException {
+public class NotFoundException extends BaseException {
 
     public NotFoundException(BusinessExceptionEnum exceptionEnum) {
-        super(exceptionEnum.getMsg());
+        super(exceptionEnum.getMsg(), exceptionEnum.getCode(), exceptionEnum.getDescription());
     }
 
     public NotFoundException(BusinessExceptionEnum exceptionEnum, Object object) {
-        super(String.format(exceptionEnum.getMsg(), object));
+        super(exceptionEnum.getCode(),String.format(exceptionEnum.getMsg(), object), exceptionEnum.getDescription());
     }
 }
