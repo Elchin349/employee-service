@@ -60,7 +60,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public DepartmentDetailsResponse getDepartmentGroupByEmployee(Long id) {
+    public DepartmentDetailsResponse getDepartmentGroupingEmployeesById(Long id) {
         Department department = departmentRepository.findById(id).get();
         return DepartmentMapper.toResponseDetails(department);
     }

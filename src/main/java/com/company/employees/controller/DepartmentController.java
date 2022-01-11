@@ -31,7 +31,7 @@ public class DepartmentController {
 
     @GetMapping("/details/{id}")
     public ResponseEntity<DepartmentDetailsResponse> getDetailsById(@PathVariable Long id) {
-        return ResponseEntity.ok(departmentService.getDepartmentGroupByEmployee(id));
+        return ResponseEntity.ok(departmentService.getDepartmentGroupingEmployeesById(id));
     }
 
     @GetMapping("/details")

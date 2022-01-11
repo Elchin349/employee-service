@@ -23,13 +23,16 @@ public class JobDetail {
     private LocalDate endDate;
     @Column(name = "is_present")
     private boolean isPresent;
-    @Column(name = "salary")
-    private BigDecimal salary;
-    @OneToOne(mappedBy = "jobDetail")
+    @Column(name = "current_salary")
+    private BigDecimal currentSalary;
+    @Column(name = "last_salary")
+    private BigDecimal lastSalary;
+    @OneToOne()
+    @JoinColumn(name = "employee_id")
     private Employee employee;
 
     @PrePersist
-    private void init(){
+    private void init() {
         createdAt = LocalDateTime.now();
     }
 }

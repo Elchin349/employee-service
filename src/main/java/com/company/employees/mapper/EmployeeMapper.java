@@ -22,7 +22,7 @@ public class EmployeeMapper {
         employee.setBirthDate(request.getBirthDate());
         //employee.setAddress(addressMapper.toEntity(request.getAddress(),employee));
         employee.setAddress(addressMapper.toEntity(request.getAddress()));
-        employee.setJobDetail(jobDetailMapper.toEntity(request.getJobDetail()));
+        employee.setJobDetail(jobDetailMapper.toEntity(request.getJobDetail(), employee));
         return employee;
     }
 
