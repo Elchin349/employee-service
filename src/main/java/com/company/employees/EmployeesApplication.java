@@ -20,6 +20,7 @@ public class EmployeesApplication {
          * active,
          * department_id,
          * current_salary,
+         * position_title
          * new_salary
          * }
          *
