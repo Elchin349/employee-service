@@ -3,11 +3,14 @@ package com.company.employees.controller;
 import com.company.employees.container.api.ApiBuilder;
 import com.company.employees.container.api.CollectionMessage;
 import com.company.employees.container.api.SingleMessage;
+import com.company.employees.dto.EmployeeCountResponse;
 import com.company.employees.dto.request.EmployeeRequest;
 import com.company.employees.dto.response.EmployeeResponse;
 import com.company.employees.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @RestController
@@ -47,4 +50,8 @@ public class EmployeeController implements ApiBuilder {
         employeeService.deleteById(id);
     }
 
+    @GetMapping("/count-employees")
+    public ResponseEntity<CollectionMessage<EmployeeCountResponse>> countAllEmployees() {
+        return ResponseEntity.ok(generateCollectionMessage(employeeService.countAllEmployees()));
+    }
 }

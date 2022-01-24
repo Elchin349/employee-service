@@ -1,5 +1,6 @@
 package com.company.employees.service.impl;
 
+import com.company.employees.dto.EmployeeCountResponse;
 import com.company.employees.dto.request.EmployeeRequest;
 import com.company.employees.dto.response.EmployeeResponse;
 import com.company.employees.entity.Department;
@@ -76,4 +77,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return null;
     }
 
+
+    @Override
+    public List<EmployeeCountResponse> countAllEmployees() {
+        return employeeRepository.countAllEmployeesGroupByDepartmentV2();
+    }
 }
