@@ -4,8 +4,10 @@ import com.company.employees.dto.EmployeeCountResponse;
 import com.company.employees.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,5 +25,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<EmployeeCountResponse> countAllEmployeesGroupByDepartmentV2();
 
     long countByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+
+    @Query("select e from Employee e where e.jobDetail.currentSalary between :min and :max")
+    List<Employee> findEmployeeByCurrentSalary(@Param("min") BigDecimal min, @Param("max") BigDecimal max);
 
 }

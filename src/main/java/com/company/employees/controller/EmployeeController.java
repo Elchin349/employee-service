@@ -41,7 +41,7 @@ public class EmployeeController implements ApiBuilder {
 
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeResponse> update(@PathVariable Long id, @RequestBody EmployeeRequest request) {
-        EmployeeResponse response = employeeService.update(id,request);
+        EmployeeResponse response = employeeService.update(id, request);
         return ResponseEntity.ok(response);
     }
 

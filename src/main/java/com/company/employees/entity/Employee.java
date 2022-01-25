@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 @Table(name = "employees")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class Employee {
 
     @Id
@@ -29,22 +30,20 @@ public class Employee {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "department_id")
     private Department department;
 
-
-//    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
-//    private Address address;
-
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "employee",cascade = CascadeType.ALL)
     private Address address;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "employee",cascade = CascadeType.ALL)
     private JobDetail jobDetail;
 
     @PrePersist
     public void init() {
         createdAt = LocalDateTime.now();
     }
+
+
 }

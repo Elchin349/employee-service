@@ -19,4 +19,6 @@ public interface EmployeeService {
     EmployeeResponse update(Long id, EmployeeRequest employeeRequest);
 
     List<EmployeeCountResponse> countAllEmployees();
+
+    Long countEmployeeBetweenDate(String start, String end);
 }

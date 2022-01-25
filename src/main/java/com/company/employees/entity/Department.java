@@ -1,9 +1,6 @@
 package com.company.employees.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,10 +8,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "departments")
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Data
+@Getter
+@Setter
 public class Department {
 
     @Id
@@ -25,11 +20,11 @@ public class Department {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "department",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Employee> employeeList;
 
     @PrePersist
-    public void init(){
+    public void init() {
         createdAt = LocalDateTime.now();
     }
 }

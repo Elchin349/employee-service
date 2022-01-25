@@ -1,12 +1,16 @@
 package com.company.employees.entity;
 
-import lombok.Data;
+
+import lombok.Getter;
+import lombok.Setter;
+
 
 import javax.persistence.*;
 
 @Entity
-@Data
 @Table(name = "addresses")
+@Getter
+@Setter
 public class Address {
 
     @Id
@@ -25,11 +29,7 @@ public class Address {
     @Column(name = "city")
     public String city;
 
-
-//    @OneToOne()
-//    @JoinColumn(name = "employee_id")
-//    public Employee employee;
-
-    @OneToOne(mappedBy = "address")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "employee_id")
     public Employee employee;
 }

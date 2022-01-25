@@ -15,9 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +32,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse createEmployee(EmployeeRequest request) {
-
         Employee employee = employeeMapper.toEmployee(request);
         Optional<Department> department = departmentRepository.findById(request.getDepartmentId());
         if (department.isPresent()) {
@@ -52,12 +53,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeResponse> findAll() {
-        List<Employee> employeeList = employeeRepository.findAll();
-        List<EmployeeResponse> responses = new ArrayList<>();
-        for (Employee e : employeeList) {
-            responses.add(employeeMapper.toResponse(e));
-        }
-        return responses;
+        return employeeRepository.findAll()
+                .stream()
+                .map(employeeMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -77,9 +76,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         return null;
     }
 
-
     @Override
     public List<EmployeeCountResponse> countAllEmployees() {
         return employeeRepository.countAllEmployeesGroupByDepartmentV2();
+    }
+
+    @Override
+    public Long countEmployeeBetweenDate(String start, String end) {
+        LocalDateTime startDate = LocalDateTime.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        LocalDateTime endDate = LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return employeeRepository.countByCreatedAtBetween(startDate, endDate);
     }
 }

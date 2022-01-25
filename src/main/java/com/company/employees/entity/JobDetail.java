@@ -1,15 +1,19 @@
 package com.company.employees.entity;
 
-import lombok.Data;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Data
+
 @Entity
 @Table(name = "job_details")
+@Setter
+@Getter
 public class JobDetail {
 
     @Id
@@ -27,7 +31,7 @@ public class JobDetail {
     private BigDecimal currentSalary;
     @Column(name = "last_salary")
     private BigDecimal lastSalary;
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
