@@ -44,6 +44,9 @@ public class Employee {
     @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
     private JobDetail jobDetail;
 
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
+    private Image image;
+
     @PrePersist
     public void init() {
         createdAt = LocalDateTime.now();
