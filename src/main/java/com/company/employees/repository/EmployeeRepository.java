@@ -2,6 +2,8 @@ package com.company.employees.repository;
 
 import com.company.employees.dto.EmployeeCountResponse;
 import com.company.employees.entity.Employee;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,7 +28,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     long countByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 
-    @Query("select e from Employee e where e.jobDetail.currentSalary between :min and :max")
+    @Query("select e from Employee e where e.jobDetail.currentSalary between :min and :max order by e.id ")
     List<Employee> findEmployeeByCurrentSalary(@Param("min") BigDecimal min, @Param("max") BigDecimal max);
 
+    List<Employee> getEmployeesByActiveIsTrue(Pageable pageable);
 }

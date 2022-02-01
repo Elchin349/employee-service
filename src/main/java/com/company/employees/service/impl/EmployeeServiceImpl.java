@@ -12,14 +12,17 @@ import com.company.employees.repository.DepartmentRepository;
 import com.company.employees.repository.EmployeeRepository;
 import com.company.employees.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +33,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeMapper employeeMapper;
 
+    @Transactional
     @Override
     public EmployeeResponse createEmployee(EmployeeRequest request) {
         Employee employee = employeeMapper.toEmployee(request);
@@ -52,28 +56,40 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeResponse> findAll() {
-        return employeeRepository.findAll()
+    public List<EmployeeResponse> findAll(Integer size, Integer offset, Boolean isActive) {
+        List<Employee> employees;
+        if (!isActive) {
+            employees = findAllActiveEmployees(size, offset);
+        } else {
+            employees = findAllEmployees(size, offset);
+        }
+        return employees
                 .stream()
                 .map(employeeMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public void deleteById(Long id) {
-        Optional<Employee> employee = employeeRepository.findById(id);
-        employee.ifPresent(employeeRepository::delete);
+    private List<Employee> findAllActiveEmployees(Integer size, Integer offset) {
+        return employeeRepository.getEmployeesByActiveIsTrue(PageRequest.of(offset, size));
     }
 
+    private List<Employee> findAllEmployees(Integer size, Integer offset) {
+        return employeeRepository.findAll(PageRequest.of(offset, size)).getContent();
+    }
+
+    @Transactional
     @Override
     public EmployeeResponse update(Long id, EmployeeRequest employeeRequest) {
         Optional<Employee> employee = employeeRepository.findById(id);
         if (employee.isPresent()) {
-            Employee employee1 = employeeMapper.toEmployee(employeeRequest);
-            employee1.setId(id);
-            return employeeMapper.toResponse(employeeRepository.save(employee1));
+            if (employee.get().getActive()) {
+                Employee employee1 = employeeMapper.toEmployee(employeeRequest);
+                employee1.setId(id);
+                return employeeMapper.toResponse(employeeRepository.save(employee1));
+            }
+            throw new NotFoundException(BusinessExceptionEnum.EMPLOYEE_IS_NOT_ACTIVE_FOR_UPDATE);
         }
-        return null;
+        throw new NotFoundException(BusinessExceptionEnum.EMPLOYEE_BY_ID_NOT_FOUND, id);
     }
 
     @Override
@@ -86,5 +102,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         LocalDateTime startDate = LocalDateTime.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         LocalDateTime endDate = LocalDateTime.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         return employeeRepository.countByCreatedAtBetween(startDate, endDate);
+    }
+
+    @Override
+    public void deleteEmployee(Long id) {
+        Optional<Employee> employee = employeeRepository.findById(id);
+        if (employee.isPresent()) {
+            employee.get().setActive(Boolean.FALSE);
+            employeeRepository.save(employee.get());
+        } else {
+            throw new NotFoundException(BusinessExceptionEnum.EMPLOYEE_BY_ID_NOT_FOUND, id);
+        }
     }
 }

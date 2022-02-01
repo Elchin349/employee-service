@@ -10,8 +10,6 @@ import com.company.employees.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
-import java.util.List;
 
 @RestController
 @RequestMapping("/employee")
@@ -35,8 +33,10 @@ public class EmployeeController implements ApiBuilder {
     }
 
     @GetMapping
-    public ResponseEntity<CollectionMessage<EmployeeResponse>> getAll() {
-        return ResponseEntity.ok(generateCollectionMessage(employeeService.findAll()));
+    public ResponseEntity<CollectionMessage<EmployeeResponse>> getAll(@RequestParam(required = false) Integer size,
+                                                                      @RequestParam(required = false) Integer offset,
+                                                                      @RequestParam(defaultValue = "false") Boolean isActive) {
+        return ResponseEntity.ok(generateCollectionMessage(employeeService.findAll(size, offset, isActive)));
     }
 
     @PutMapping("/{id}")
@@ -47,7 +47,7 @@ public class EmployeeController implements ApiBuilder {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        employeeService.deleteById(id);
+        employeeService.deleteEmployee(id);
     }
 
     @GetMapping("/count-employees")

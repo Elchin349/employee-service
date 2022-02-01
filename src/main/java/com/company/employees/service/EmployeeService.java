@@ -12,13 +12,13 @@ public interface EmployeeService {
 
     EmployeeResponse findById(Long id);
 
-    List<EmployeeResponse> findAll();
-
-    void deleteById(Long id);
+    List<EmployeeResponse> findAll(Integer size, Integer offset,Boolean isActive);
 
     EmployeeResponse update(Long id, EmployeeRequest employeeRequest);
 
     List<EmployeeCountResponse> countAllEmployees();
 
     Long countEmployeeBetweenDate(String start, String end);
+
+    void deleteEmployee(Long id);
 }

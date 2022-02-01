@@ -34,7 +34,7 @@ public class EmployeeMapper {
         response.setBirthDate(employee.getBirthDate());
         response.setEmail(employee.getEmail());
         response.setPhone(employee.getPhone());
-        response.setAddress(addressMapper.toResponse(employee.getAddress()));
+       // response.setAddress(addressMapper.toResponse(employee.getAddress()));
         response.setJobDetail(jobDetailMapper.toResponse(employee.getJobDetail()));
         return response;
     }

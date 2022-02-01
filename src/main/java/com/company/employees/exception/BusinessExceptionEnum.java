@@ -6,7 +6,10 @@ public enum BusinessExceptionEnum {
             "the employee not found in our database"),
     DEPARTMENT_BY_ID_NOT_FOUND("Department by id: %s not found",
             "404",
-            "the department not found in our database");
+            "the department not found in our database"),
+    EMPLOYEE_IS_NOT_ACTIVE_FOR_UPDATE("Employee is not active for update",
+            "500",
+            "Employee is not active for update");
 
     BusinessExceptionEnum(String msg, String code, String description) {
         this.msg = msg;

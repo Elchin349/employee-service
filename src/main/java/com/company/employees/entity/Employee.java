@@ -25,25 +25,28 @@ public class Employee {
     private LocalDate birthDate;
     @Column(name = "email")
     private String email;
+    @Column(name = "gender")
+    private String gender;
     @Column(name = "phone")
     private String phone;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+    @Column(name = "active")
+    private Boolean active;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "department_id")
     private Department department;
 
-    @OneToOne(mappedBy = "employee",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
     private Address address;
 
-    @OneToOne(mappedBy = "employee",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
     private JobDetail jobDetail;
 
     @PrePersist
     public void init() {
         createdAt = LocalDateTime.now();
     }
-
 
 }
