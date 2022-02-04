@@ -1,9 +1,7 @@
 package com.company.employees.entity;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,7 +23,7 @@ public class Image {
     private LocalDateTime createAt;
 
     @Lob
-    @Column(name = "data")
+    @Column(name = "data",columnDefinition = "CLOB")
     private byte[] data;
 
     private String type;
@@ -33,4 +31,9 @@ public class Image {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")
     private Employee employee;
+
+    @PrePersist
+    public void init() {
+        createAt = LocalDateTime.now();
+    }
 }

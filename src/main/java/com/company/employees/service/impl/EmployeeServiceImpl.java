@@ -12,6 +12,7 @@ import com.company.employees.repository.DepartmentRepository;
 import com.company.employees.repository.EmployeeRepository;
 import com.company.employees.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,13 +25,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
-
     private final EmployeeMapper employeeMapper;
 
     @Transactional
@@ -46,6 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         throw new NotFoundException(BusinessExceptionEnum.DEPARTMENT_BY_ID_NOT_FOUND, request.getDepartmentId());
     }
 
+    @Transactional
     @Override
     public EmployeeResponse findById(@PathVariable Long id) {
         Optional<Employee> employee = employeeRepository.findById(id);
@@ -55,6 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         throw new NotFoundException(BusinessExceptionEnum.EMPLOYEE_BY_ID_NOT_FOUND, id);
     }
 
+    @Transactional
     @Override
     public List<EmployeeResponse> findAll(Integer size, Integer offset, Boolean isActive) {
         List<Employee> employees;

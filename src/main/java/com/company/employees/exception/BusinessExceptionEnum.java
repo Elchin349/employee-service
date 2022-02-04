@@ -9,7 +9,10 @@ public enum BusinessExceptionEnum {
             "the department not found in our database"),
     EMPLOYEE_IS_NOT_ACTIVE_FOR_UPDATE("Employee is not active for update",
             "500",
-            "Employee is not active for update");
+            "Employee is not active for update"),
+    UPLOAD_IMAGE_ERROR("Error occured while upload image",
+            "500",
+            "Error occured while upload image");
 
     BusinessExceptionEnum(String msg, String code, String description) {
         this.msg = msg;

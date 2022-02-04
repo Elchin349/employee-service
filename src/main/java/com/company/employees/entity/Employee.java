@@ -23,6 +23,8 @@ public class Employee {
     private String lastName;
     @Column(name = "birth_date")
     private LocalDate birthDate;
+    @Column(name = "fin_code")
+    private String finCode;
     @Column(name = "email")
     private String email;
     @Column(name = "gender")

@@ -7,9 +7,9 @@ import com.company.employees.dto.EmployeeCountResponse;
 import com.company.employees.dto.request.EmployeeRequest;
 import com.company.employees.dto.response.EmployeeResponse;
 import com.company.employees.service.EmployeeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequestMapping("/employee")
@@ -33,9 +33,9 @@ public class EmployeeController implements ApiBuilder {
     }
 
     @GetMapping
-    public ResponseEntity<CollectionMessage<EmployeeResponse>> getAll(@RequestParam(required = false) Integer size,
-                                                                      @RequestParam(required = false) Integer offset,
-                                                                      @RequestParam(defaultValue = "false") Boolean isActive) {
+    public ResponseEntity<CollectionMessage<EmployeeResponse>> getAll(@RequestParam(required = false, defaultValue = "20") Integer size,
+                                                                      @RequestParam(required = false, defaultValue = "0") Integer offset,
+                                                                      @RequestParam(required = false, defaultValue = "false") Boolean isActive) {
         return ResponseEntity.ok(generateCollectionMessage(employeeService.findAll(size, offset, isActive)));
     }
 

@@ -8,14 +8,16 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
-public class EmployeeResponse implements Serializable{
+public class EmployeeResponse implements Serializable {
     private Long id;
     private String firstName;
     private String lastName;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
     private String email;
+    private String finCode;
     private String phone;
     private AddressResponse address;
     private JobDetailResponse jobDetail;
+    private ImageResponse image;
 }

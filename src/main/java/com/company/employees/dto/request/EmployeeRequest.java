@@ -13,6 +13,7 @@ public class EmployeeRequest {
     private String lastName;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
+    private String finCode;
     private String email;
     private String phone;
     private Long departmentId;
