@@ -10,6 +10,7 @@ import com.company.employees.exception.NotFoundException;
 import com.company.employees.mapper.EmployeeMapper;
 import com.company.employees.repository.DepartmentRepository;
 import com.company.employees.repository.EmployeeRepository;
+import com.company.employees.service.EmployeeLogService;
 import com.company.employees.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
     private final EmployeeMapper employeeMapper;
+    private final EmployeeLogService employeeLogService;
 
     @Transactional
     @Override
@@ -42,6 +44,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (department.isPresent()) {
             employee.setDepartment(department.get());
             employee = employeeRepository.save(employee);
+            // employeeLogService.createLog("CREATE", "elchin349", employee);
             return employeeMapper.toResponse(employee);
         }
         throw new NotFoundException(BusinessExceptionEnum.DEPARTMENT_BY_ID_NOT_FOUND, request.getDepartmentId());
@@ -83,12 +86,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     @Override
     public EmployeeResponse update(Long id, EmployeeRequest employeeRequest) {
-        Optional<Employee> employee = employeeRepository.findById(id);
-        if (employee.isPresent()) {
-            if (employee.get().getActive()) {
-                Employee employee1 = employeeMapper.toEmployee(employeeRequest);
-                employee1.setId(id);
-                return employeeMapper.toResponse(employeeRepository.save(employee1));
+        Optional<Employee> oldEmployee = employeeRepository.findById(id);
+        if (oldEmployee.isPresent()) {
+            if (oldEmployee.get().getActive()) {
+                Employee newEmployee = employeeMapper.toEmployee(employeeRequest);
+                newEmployee.setId(id);
+                newEmployee = employeeRepository.save(newEmployee);
+                //employeeLogService.createLog("UPDATE", "elchin349", oldEmployee.get(), newEmployee);
+                return employeeMapper.toResponse(newEmployee);
             }
             throw new NotFoundException(BusinessExceptionEnum.EMPLOYEE_IS_NOT_ACTIVE_FOR_UPDATE);
         }
@@ -111,8 +116,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void deleteEmployee(Long id) {
         Optional<Employee> employee = employeeRepository.findById(id);
         if (employee.isPresent()) {
+            Employee oldEmployee = employee.get();
             employee.get().setActive(Boolean.FALSE);
-            employeeRepository.save(employee.get());
+            Employee newEmployee = employeeRepository.save(employee.get());
+            //employeeLogService.createLog("DELETE", "elchin349", oldEmployee, newEmployee);
         } else {
             throw new NotFoundException(BusinessExceptionEnum.EMPLOYEE_BY_ID_NOT_FOUND, id);
         }

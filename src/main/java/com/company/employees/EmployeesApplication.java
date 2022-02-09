@@ -10,7 +10,6 @@ public class EmployeesApplication {
         SpringApplication.run(EmployeesApplication.class, args);
 
         /**
-         *
          * Auth-service
          *
          * User
@@ -28,7 +27,6 @@ public class EmployeesApplication {
          * Permission;
          * id
          * name;
-         *
          */
     }
 }
