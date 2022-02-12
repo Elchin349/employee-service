@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController implements ApiBuilder {
@@ -37,6 +39,20 @@ public class EmployeeController implements ApiBuilder {
                                                                       @RequestParam(required = false, defaultValue = "0") Integer offset,
                                                                       @RequestParam(required = false, defaultValue = "false") Boolean isActive) {
         return ResponseEntity.ok(generateCollectionMessage(employeeService.findAll(size, offset, isActive)));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<CollectionMessage<EmployeeResponse>> search(@RequestParam(required = false, defaultValue = "20") Integer size,
+                                                                      @RequestParam(required = false, defaultValue = "0") Integer offset,
+                                                                      @RequestParam(required = false) String firstName,
+                                                                      @RequestParam(required = false) String lastName,
+                                                                      @RequestParam(required = false) String gender,
+                                                                      @RequestParam(required = false) String finCode,
+                                                                      @RequestParam(required = false) String start,
+                                                                      @RequestParam(required = false) String end
+    ) {
+        return ResponseEntity.ok(generateCollectionMessage(employeeService.search(size, offset, firstName,
+                lastName, gender, finCode, LocalDate.parse(start), LocalDate.parse(end))));
     }
 
     @PutMapping("/{id}")

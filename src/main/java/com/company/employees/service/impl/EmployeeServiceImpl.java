@@ -10,6 +10,7 @@ import com.company.employees.exception.NotFoundException;
 import com.company.employees.mapper.EmployeeMapper;
 import com.company.employees.repository.DepartmentRepository;
 import com.company.employees.repository.EmployeeRepository;
+import com.company.employees.repository.search.SearchSpecification;
 import com.company.employees.service.EmployeeLogService;
 import com.company.employees.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +20,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 
 @Slf4j
 @Service
@@ -69,6 +70,18 @@ public class EmployeeServiceImpl implements EmployeeService {
         } else {
             employees = findAllEmployees(size, offset);
         }
+        return employees
+                .stream()
+                .map(employeeMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EmployeeResponse> search(Integer size, Integer offset, String firstName, String lastName,
+                                         String gender, String finCode, LocalDate start, LocalDate end) {
+        SearchSpecification searchSpecification = new SearchSpecification();
+        searchSpecification.search(firstName, lastName, gender, finCode, start, end);
+        List<Employee> employees = employeeRepository.findAll(searchSpecification);
         return employees
                 .stream()
                 .map(employeeMapper::toResponse)
