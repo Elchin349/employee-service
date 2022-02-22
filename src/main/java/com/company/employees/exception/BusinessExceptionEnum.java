@@ -12,7 +12,14 @@ public enum BusinessExceptionEnum {
             "Employee is not active for update"),
     UPLOAD_IMAGE_ERROR("Error occured while upload image",
             "500",
-            "Error occured while upload image");
+            "Error occurred while upload image"),
+    DATE_TIME_FORMAT_ERROR("Date Time pattern is not valid",
+            "404",
+            "Date Time pattern (yyyy-MM-dd hh:mm:ss) is not valid"),
+    DATE_FORMAT_ERROR("Date pattern(yyyy-MM-dd) is not valid",
+            "404",
+            "Date pattern(yyyy-MM-dd) is not valid"),
+    ;
 
     BusinessExceptionEnum(String msg, String code, String description) {
         this.msg = msg;

@@ -2,6 +2,7 @@ package com.company.employees.service;
 
 import com.company.employees.dto.EmployeeCountResponse;
 import com.company.employees.dto.request.EmployeeRequest;
+import com.company.employees.dto.request.EmployeeSearchFilter;
 import com.company.employees.dto.response.EmployeeResponse;
 
 import java.time.LocalDate;
@@ -15,8 +16,7 @@ public interface EmployeeService {
 
     List<EmployeeResponse> findAll(Integer size, Integer offset, Boolean isActive);
 
-    List<EmployeeResponse> search(Integer size, Integer offset, String firstName, String lastName,
-                                  String gender, String finCode, LocalDate start, LocalDate end);
+    List<EmployeeResponse> search(EmployeeSearchFilter employeeSearchFilter);
 
     EmployeeResponse update(Long id, EmployeeRequest employeeRequest);
 

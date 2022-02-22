@@ -2,6 +2,7 @@ package com.company.employees.service.impl;
 
 import com.company.employees.dto.EmployeeCountResponse;
 import com.company.employees.dto.request.EmployeeRequest;
+import com.company.employees.dto.request.EmployeeSearchFilter;
 import com.company.employees.dto.response.EmployeeResponse;
 import com.company.employees.entity.Department;
 import com.company.employees.entity.Employee;
@@ -77,10 +78,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeResponse> search(Integer size, Integer offset, String firstName, String lastName,
-                                         String gender, String finCode, LocalDate start, LocalDate end) {
+    public List<EmployeeResponse> search(EmployeeSearchFilter employeeSearchFilter) {
         SearchSpecification searchSpecification = new SearchSpecification();
-        searchSpecification.search(firstName, lastName, gender, finCode, start, end);
+        searchSpecification.search(employeeSearchFilter);
         List<Employee> employees = employeeRepository.findAll(searchSpecification);
         return employees
                 .stream()
