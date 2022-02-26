@@ -20,9 +20,7 @@ public class EmployeeSearchFilter {
     private String city;
     private LocalDate startBirthDate;
     private LocalDate endBirthDate;
-    @Size(min = 250)
     private BigDecimal salaryMin;
-    @Size(max = 30000)
     private BigDecimal salaryMax;
     private LocalDate startJobDate;
     private LocalDate endJobDate;

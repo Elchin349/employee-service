@@ -2,14 +2,14 @@ package com.company.employees.repository.search;
 
 import com.company.employees.constants.CommonConstant;
 import com.company.employees.dto.request.EmployeeSearchFilter;
+import com.company.employees.entity.Address;
 import com.company.employees.entity.Employee;
+import com.company.employees.entity.JobDetail;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ObjectUtils;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +39,24 @@ public class SearchSpecification implements Specification<Employee> {
         if (!ObjectUtils.isEmpty(filter.getFinCode())) {
             add(new SearchCriteria("finCode", filter.getFinCode(), SearchOperation.EQUAL));
         }
+
+        if (!ObjectUtils.isEmpty(filter.getCity())) {
+            add(new SearchCriteria("city", filter.getCity(), SearchOperation.JOIN_ADDRESS, SearchOperation.EQUAL));
+        }
+
+        if (!ObjectUtils.isEmpty(filter.getSalaryMin()) && !ObjectUtils.isEmpty(filter.getSalaryMax())) {
+            add(new SearchCriteria("currentSalary", filter.getSalaryMin(),filter.getSalaryMax(),
+                    SearchOperation.JOIN_JOB_DETAILS, SearchOperation.BETWEEN_SALARY));
+        }
+//        if (!ObjectUtils.isEmpty(filter.getSalaryMin())) {
+//            add(new SearchCriteria("currentSalary", filter.getSalaryMin(),
+//                    SearchOperation.JOIN_JOB_DETAILS, SearchOperation.LESS_THAN_EQUAL));
+//        }
+//
+//        if (!ObjectUtils.isEmpty(filter.getSalaryMax())) {
+//            add(new SearchCriteria("currentSalary", filter.getSalaryMax(),
+//                    SearchOperation.JOIN_JOB_DETAILS, SearchOperation.GREATER_THAN_EQUAL));
+//        }
     }
 
     @Override
@@ -64,6 +82,39 @@ public class SearchSpecification implements Specification<Employee> {
                 predicates.add(builder.between(root.get(criteria.getKey()),
                         (LocalDate) criteria.getValue1(),
                         (LocalDate) criteria.getValue2()));
+            } else if (criteria.getOperation().equals(SearchOperation.JOIN_ADDRESS)) {
+                Join<Employee, Address> employeeAddressJoin = root.join("address", JoinType.INNER);
+                if (criteria.getOperation2().equals(SearchOperation.EQUAL)) {
+                    predicates.add(
+                            builder.equal(employeeAddressJoin.get(criteria.getKey()).as(String.class), criteria.getValue1())
+                    );
+                }
+            } else if (criteria.getOperation().equals(SearchOperation.JOIN_JOB_DETAILS)) {
+                Join<Employee, JobDetail> employeeJobDetailJoin = root.join("jobDetail", JoinType.INNER);
+                if (criteria.getOperation2().equals(SearchOperation.EQUAL)) {
+                    predicates.add(
+                            builder.equal(employeeJobDetailJoin.get(criteria.getKey()).as(BigDecimal.class), criteria.getValue1())
+                    );
+                }
+                else if (criteria.getOperation2().equals(SearchOperation.LESS_THAN_EQUAL)) {
+                    predicates.add(
+                            builder.lessThanOrEqualTo(employeeJobDetailJoin.get(criteria.getKey()).as(BigDecimal.class),
+                                    (BigDecimal) criteria.getValue1())
+                    );
+                } else if (criteria.getOperation2().equals(SearchOperation.GREATER_THAN_EQUAL)) {
+                    predicates.add(
+                            builder.greaterThanOrEqualTo(employeeJobDetailJoin.get(criteria.getKey()).as(BigDecimal.class),
+                                    (BigDecimal) criteria.getValue1())
+                    );
+                }
+                else if (criteria.getOperation2().equals(SearchOperation.BETWEEN_SALARY)) {
+                    predicates.add(
+                            builder.between(employeeJobDetailJoin.get(criteria.getKey()).as(BigDecimal.class),
+                                    (BigDecimal) criteria.getValue1(),
+                                    (BigDecimal) criteria.getValue2()
+                            )
+                    );
+                }
             }
         }
         return builder.and(predicates.toArray(new Predicate[0]));
@@ -78,4 +129,8 @@ public class SearchSpecification implements Specification<Employee> {
     public Specification<Employee> or(Specification<Employee> other) {
         return Specification.super.or(other);
     }
+
+//       builder.between(employeeJobDetailJoin.get(criteria.getKey()).as(BigDecimal.class),
+//                                    (BigDecimal) criteria.getValue1(),
+//            (BigDecimal) criteria.getValue2())
 }

@@ -13,5 +13,7 @@ public enum SearchOperation {
     IN,
     BETWEEN_DATE,
     BETWEEN_SALARY,
-    NOT_IN
+    NOT_IN,
+    JOIN_ADDRESS,
+    JOIN_JOB_DETAILS
 }
